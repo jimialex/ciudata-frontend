@@ -1,0 +1,37 @@
+<form class="background" [formGroup]="loginForm" (submit)="onLogin()">
+  <mat-card class="container">
+    <mat-card-header>
+      <img
+        mat-car-image
+        src="../../../assets/images/logo ciudata.png"
+        width="180"
+      />
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field appearance="outline">
+        <mat-label>Usuario</mat-label>
+        <input
+          matInput
+          placeholder="Nombre de usuario"
+          formControlName="user"
+          required
+          type="text"
+        />
+        @if (loginForm.get('user')?.hasError('required')) {
+          <mat-error>El usuario es requerido</mat-error>
+            }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input matInput formControlName="password" required type="password" />
+        @if (loginForm.get('password')?.hasError('required')) {
+          <mat-error>La contraseña es requerido</mat-error>
+            }
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button type="submit">Ingresar</button>
+      <!-- <pre>{{currentUser$ | async | json}}</pre> -->
+    </mat-card-actions>
+  </mat-card>
+</form>

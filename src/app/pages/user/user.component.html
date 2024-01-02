@@ -1,0 +1,130 @@
+<main>
+  <section>
+    <button mat-fab class="fab" color="primary" (click)="onOpenDialog()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </section>
+
+  <h2>Usuarios - conductores</h2>
+
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">view_list</mat-icon>
+
+      </ng-template>
+      <div>
+        <mat-form-field>
+          <mat-label>Filter</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Juan" #input>
+        </mat-form-field>
+
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <!-- Position Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>No.</th>
+            <td mat-cell *matCellDef="let user">{{ user.id }}</td>
+          </ng-container>
+
+          <!-- image Column -->
+          <ng-container matColumnDef="last_name">
+            <th mat-header-cell *matHeaderCellDef>Imagen</th>
+            <td mat-cell *matCellDef="let user">
+              @if(user.photo){
+              <img [src]="'https://app.ciudata.io' + user.photo" width="30" />
+              } @else{
+              <img src="../../../assets/images/avatar-ciudata.png" width="30" />
+              }
+            </td>
+          </ng-container>
+
+          <!-- Full name Column -->
+          <ng-container matColumnDef="first_name">
+            <th mat-header-cell *matHeaderCellDef>Nombre completo</th>
+            <td mat-cell *matCellDef="let user">
+              {{ user.first_name }} {{ user.last_name }}
+            </td>
+          </ng-container>
+
+          <!-- Username Column -->
+          <ng-container matColumnDef="username">
+            <th mat-header-cell *matHeaderCellDef>Username</th>
+            <td mat-cell *matCellDef="let user">{{ user.username }}</td>
+          </ng-container>
+
+          <!-- Email Column -->
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>Correo</th>
+            <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let user">
+              <div class="example-button-row">
+                <div class="example-flex-container">
+                  <button mat-icon-button color="accent" aria-label="Example icon button with a open in new tab icon">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                  <button mat-icon-button color="primary" aria-label="Example icon button with a home icon"
+                    matTooltip="Asignar vehículo">
+                    <mat-icon>local_shipping</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" aria-label="Example icon button with a heart icon">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">
+              No data matching the filter "{{ input.value }}"
+            </td>
+          </tr>
+        </table>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">grid_view</mat-icon>
+
+      </ng-template>
+      <div>
+        <ul class="cards">
+          @for(user of users(); track user.id) {
+          <li class="cards__item">
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>
+                  {{ user.username }}
+                </mat-card-title>
+                <span class="spacer"></span>
+                @if(user.photo){
+                <img [src]="'https://app.ciudata.io' + user.photo" width="30" />
+                } @else{
+                <img src="../../../assets/images/avatar-ciudata.png" width="30" />
+                }
+              </mat-card-header>
+              <mat-card-content>
+                <p>Usuario: {{ user.username }}</p>
+                <p>email: {{ user.email }}</p>
+              </mat-card-content>
+            </mat-card>
+          </li>
+          }
+        </ul>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</main>

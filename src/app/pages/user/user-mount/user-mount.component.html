@@ -1,0 +1,57 @@
+<form [formGroup]="userForm" (submit)="onSave()">
+  <h3 mat-dialog-title>{{ title }}</h3>
+  <mat-dialog-content class="content">
+    <mat-grid-list cols="2" rowHeight="2:1">
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Usuario</mat-label>
+          <input matInput formControlName="username" />
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Contraseña</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Correo Electrónico</mat-label>
+          <input matInput formControlName="email" />
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Cargo</mat-label>
+          <mat-select matInput formControlName="groups">
+            @for(group of groups(); track group.id) {
+            <mat-option value="group.id">{{group.name}}</mat-option>
+            }
+            <!--mat-option value="1">Administrador</mat-option-->
+            <!--mat-option value="2">Conductor</mat-option-->
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="first_name" />
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Apellido</mat-label>
+          <input matInput formControlName="last_name" />
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-stroked-button color="primary" type="submit">Aceptar</button>
+    <button mat-button mat-stroked-button (click)="onCancel()">Cancelar</button>
+  </mat-dialog-actions>
+</form>

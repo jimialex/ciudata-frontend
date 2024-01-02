@@ -1,0 +1,50 @@
+main {
+    padding: 1rem;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    column-gap: 10px;
+}
+
+// .section_lit {
+
+// }
+
+.wrapper {
+    // padding: 2rem;   
+    display: flex;
+    justify-content: center;
+    justify-content: center;
+}
+
+.section_map {
+    max-width: 700px;
+    max-height: 600px;
+    min-width: 500px;
+    min-height: 520px;
+    border-radius: 1rem;
+    border: solid 10px white;
+    box-shadow: 0 12.5px 10px rgba(0, 0, 0, 0.035),
+        0 100px 80px rgba(0, 0, 0, 0.07);
+}
+
+.section-table {
+    margin-top: 2em;
+}
+
+.mat-expansion-panel-header {
+    display: flex;
+}
+
+.fab {
+    right: 20px;
+    bottom: 20px;
+    position: fixed !important;
+}
+
+.mat-sidenav-container,
+.mat-sidenav-content {
+    transform: none !important;
+}
