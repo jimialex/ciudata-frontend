@@ -41,4 +41,24 @@ export class VehicleService {
     //   })
     // );
   }
+
+  postVehicle(vehicleService: Partial<Vehicle>) {
+    return this.http
+      .post(
+        `${this.configService.getApiUrl()}/vehicles/`,
+        {
+          ...vehicleService,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.jwtService.getAccessToken()}`,
+          },
+        }
+      )
+      .pipe(
+        tap(() => {
+          this.vehicleSignal.update((state: any) => [...state, vehicleService]);
+        })
+      );
+  }
 }

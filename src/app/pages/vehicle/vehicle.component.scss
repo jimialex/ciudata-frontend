@@ -36,6 +36,7 @@ main {
   right: 20px;
   bottom: 20px;
   position: fixed !important;
+  z-index: 100;
 }
 
 .mat-sidenav-container,

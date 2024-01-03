@@ -1,0 +1,35 @@
+<form [formGroup]="vehicleForm" (submit)="onSave()">
+  <h3 mat-dialog-title>{{ title }}</h3>
+  <mat-dialog-content class="content">
+    <mat-grid-list cols="2" rowHeight="2:1">
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Placa</mat-label>
+          <input matInput formControlName="plate" />
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Marca</mat-label>
+          <input matInput formControlName="brand" />
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Modelo</mat-label>
+          <input matInput formControlName="model" />
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Detalle</mat-label>
+          <input matInput formControlName="detail" />
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-stroked-button color="primary" type="submit">Aceptar</button>
+    <button mat-button mat-stroked-button (click)="onCancel()">Cancelar</button>
+  </mat-dialog-actions>
+</form>

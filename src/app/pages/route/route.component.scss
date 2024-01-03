@@ -6,6 +6,7 @@ main {
     display: grid;
     grid-template-columns: 30% 70%;
     column-gap: 10px;
+    margin-top: 2em;
 }
 
 // .section_lit {
@@ -23,7 +24,7 @@ main {
     max-width: 700px;
     max-height: 600px;
     min-width: 500px;
-    min-height: 520px;
+    min-height: 40em;
     border-radius: 1rem;
     border: solid 10px white;
     box-shadow: 0 12.5px 10px rgba(0, 0, 0, 0.035),
@@ -34,6 +35,11 @@ main {
     margin-top: 2em;
 }
 
+.section-list {
+    overflow-y: auto;
+    max-height: 30em;
+}
+
 .mat-expansion-panel-header {
     display: flex;
 }
@@ -42,6 +48,7 @@ main {
     right: 20px;
     bottom: 20px;
     position: fixed !important;
+    z-index: 100;
 }
 
 .mat-sidenav-container,

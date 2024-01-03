@@ -4,8 +4,8 @@
     <mat-toolbar><img src="../../assets/images/isotipo.png" width="40"></mat-toolbar>
     <mat-nav-list>
       <a mat-list-item routerLink="/user">Usuarios</a>
-      <a mat-list-item routerLink="/route">Rutas</a>
       <a mat-list-item routerLink="/vehicle">Vehiculos</a>
+      <a mat-list-item routerLink="/route">Rutas</a>
       <a mat-list-item href="#">Rutas asignadas</a>
       <a mat-list-item href="#">Rutas completadas</a>
     </mat-nav-list>
@@ -18,11 +18,7 @@
       <img mat-car-image src="../../../assets/images/logo ciudata.png" width="180" />
       <span class="spacer"></span>
       <button mat-mini-fab color="primary" [matMenuTriggerFor]="menu">
-        <img
-          [src]="'https://app.ciudata.io' + currentUser()?.photo"
-          width="40"
-          class="img-profile"
-        />
+        <img [src]="'https://app.ciudata.io' + currentUser()?.photo" width="40" class="img-profile" />
       </button>
       <mat-menu #menu="matMenu">
         <a mat-menu-item routerLink="/profile">Perfil</a>

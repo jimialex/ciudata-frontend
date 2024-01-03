@@ -8,95 +8,116 @@
 
   <h2>Rutas - areas</h2>
 
-  <section class="section-table">
-    <br>
-    <mat-form-field>
-      <mat-label>Filter</mat-label>
-      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ruta" #input>
-    </mat-form-field>
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
+    <mat-tab>
 
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-      <!-- Position Column -->
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> No. </th>
-        <td mat-cell *matCellDef="let route"> {{route.id}} </td>
-      </ng-container>
 
-      <!-- Full name Column -->
-      <ng-container matColumnDef="slug">
-        <th mat-header-cell *matHeaderCellDef> Código </th>
-        <td mat-cell *matCellDef="let route"> {{route.slug}}</td>
-      </ng-container>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">map</mat-icon>
 
-      <!-- Username Column -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Nombre </th>
-        <td mat-cell *matCellDef="let route"> {{route.name}} </td>
-      </ng-container>
+      </ng-template>
+      <!-- Vista mapas de rutas -->
+      <div class="container">
+        <section class="section-list">
+          <mat-accordion>
+            @for (route of routesSignal(); track $index) {
+            <mat-expansion-panel (opened)="openMap(route)">
+              <mat-expansion-panel-header>
+                <mat-panel-title> {{ route.name }} </mat-panel-title>
+              </mat-expansion-panel-header>
+              <p>Código: {{ route.slug}}</p>
+              <p>Area: {{ route.area.name }}</p>
+            </mat-expansion-panel>
+            }
+          </mat-accordion>
+        </section>
+        <section class="wrapper">
+          <button mat-button (click)="onClickChangeMode()">
+            <mat-icon class="example-tab-icon">
+              {{isEditMode()? 'visibility': 'edit'}}
+            </mat-icon>
+          </button>
+          <div #mapSection class="section_map"></div>
+        </section>
+      </div>
+    </mat-tab>
 
-      <!-- Email Column -->
-      <ng-container matColumnDef="area">
-        <th mat-header-cell *matHeaderCellDef> Area </th>
-        <td mat-cell *matCellDef="let route"> {{route.area.name}} </td>
-      </ng-container>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">view_list</mat-icon>
 
-      <!-- Actions Column -->
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef> Acciones </th>
-        <td mat-cell *matCellDef="let route">
-          <div class="example-button-row">
-            <div class="example-flex-container">
-              <button mat-icon-button color="accent" aria-label="Example icon button with a open in new tab icon">
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
-                <mat-icon>visibility</mat-icon>
-              </button>
-              <button mat-icon-button color="primary" aria-label="Example icon button with a home icon"
-                matTooltip="Ver ruta en mapa">
-                <mat-icon>travel_explore</mat-icon>
-              </button>
-              <button mat-icon-button color="primary" aria-label="Example icon button with a home icon"
-                matTooltip="Asignar conductor">
-                <mat-icon>person_add</mat-icon>
-              </button>
-              <button mat-icon-button color="warn" aria-label="Example icon button with a heart icon">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
-          </div>
-        </td>
-      </ng-container>
+      </ng-template>
+      <!-- Lista de rutas -->
+      <div>
+        <mat-form-field>
+          <mat-label>Filter</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ruta" #input>
+        </mat-form-field>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-      <!-- Row shown when there is no matching data. -->
-      <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-      </tr>
-    </table>
-  </section>
-  <br>
-  <br>
-  <div class="container">
-    <section class="section-list">
-      <mat-accordion>
-        @for (route of routesSignal(); track $index) {
-        <mat-expansion-panel (opened)="openMap(route)">
-          <mat-expansion-panel-header>
-            <mat-panel-title> {{ route.name }} </mat-panel-title>
-          </mat-expansion-panel-header>
-          <p>Código: {{ route.slug}}</p>
-          <p>Area: {{ route.area.name }}</p>
-        </mat-expansion-panel>
-        }
-      </mat-accordion>
-    </section>
-    <section class="wrapper">
-        <button mat-button (click)="onClickChangeMode()">{{isEditMode()? 'Modo edit': 'Modo vista'}}</button>
-      <div #mapSection class="section_map"></div>
-    </section>
-  </div>
+          <!-- Position Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> No. </th>
+            <td mat-cell *matCellDef="let route"> {{route.id}} </td>
+          </ng-container>
+
+          <!-- Full name Column -->
+          <ng-container matColumnDef="slug">
+            <th mat-header-cell *matHeaderCellDef> Código </th>
+            <td mat-cell *matCellDef="let route"> {{route.slug}}</td>
+          </ng-container>
+
+          <!-- Username Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Nombre </th>
+            <td mat-cell *matCellDef="let route"> {{route.name}} </td>
+          </ng-container>
+
+          <!-- Email Column -->
+          <ng-container matColumnDef="area">
+            <th mat-header-cell *matHeaderCellDef> Area </th>
+            <td mat-cell *matCellDef="let route"> {{route.area.name}} </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Acciones </th>
+            <td mat-cell *matCellDef="let route">
+              <div class="example-button-row">
+                <div class="example-flex-container">
+                  <button mat-icon-button color="accent" aria-label="Example icon button with a open in new tab icon">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                  <button mat-icon-button color="primary" aria-label="Example icon button with a home icon"
+                    matTooltip="Ver ruta en mapa">
+                    <mat-icon>travel_explore</mat-icon>
+                  </button>
+                  <button mat-icon-button color="primary" aria-label="Example icon button with a home icon"
+                    matTooltip="Asignar conductor">
+                    <mat-icon>person_add</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" aria-label="Example icon button with a heart icon">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+          </tr>
+        </table>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
 </main>

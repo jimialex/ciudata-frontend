@@ -12,6 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatTabsModule } from '@angular/material/tabs';
 import { Coordinates, Route } from '../../interfaces/route';
 
 @Component({
@@ -24,6 +25,7 @@ import { Coordinates, Route } from '../../interfaces/route';
     MatTooltipModule,
     MatTableModule,
     MatInputModule,
+    MatTabsModule,
   ],
   templateUrl: './route.component.html',
   styleUrl: './route.component.scss',
