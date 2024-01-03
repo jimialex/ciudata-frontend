@@ -3,7 +3,6 @@ import { Injectable, WritableSignal, inject, signal } from '@angular/core';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import { LngLatLike, Map, Marker, Popup } from 'mapbox-gl';
 import { enviroment } from '../../assets/config/config';
-import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
