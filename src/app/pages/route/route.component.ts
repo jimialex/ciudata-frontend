@@ -6,13 +6,13 @@ import {
   inject,
 } from '@angular/core';
 import { RouteService, DrawMapService } from '../../services';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Coordinates, Route } from '../../interfaces/route';
+import { Route } from '../../interfaces/route';
 
 @Component({
   selector: 'app-route',
@@ -37,6 +37,7 @@ export class RouteComponent implements AfterViewInit {
   isEditMode = this.drawMapService.isEditableMode;
 
   @ViewChild('mapSection') mapSection!: ElementRef;
+  @ViewChild(MatAccordion) accordionSection!: MatAccordion;
 
   public routesSignal = this.routeService.routesSignals;
 
@@ -55,16 +56,19 @@ export class RouteComponent implements AfterViewInit {
     this.drawMapService.buildMap(this.mapSection.nativeElement).then();
   }
 
-  openMap(route: any) {
+  openMap(route: Route) {
+    if (this.isEditMode()) {
+      this.drawMapService.changeMode();
+    }
     this.drawMapService.loadCoords(
-      route.geo_route.map((route: { lat: number; lng: number }) => [
-        route.lng,
-        route.lat,
-      ])
+      route.geo_route.map((route: any) => [route.lng, route.lat])
     );
   }
 
   onClickChangeMode() {
+    if (!this.isEditMode()) {
+      this.accordionSection.closeAll();
+    }
     this.drawMapService.changeMode();
   }
 }

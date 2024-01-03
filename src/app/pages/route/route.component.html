@@ -8,6 +8,26 @@
 
   <h2>Rutas - areas</h2>
 
+  <div class="container">
+    <section class="section-list">
+      <mat-accordion>
+        @for (route of routesSignal(); track $index) {
+        <mat-expansion-panel (opened)="openMap(route)">
+          <mat-expansion-panel-header>
+            <mat-panel-title> {{ route.name }} </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>Código: {{ route.slug}}</p>
+          <p>Area: {{ route.area.name }}</p>
+        </mat-expansion-panel>
+        }
+      </mat-accordion>
+    </section>
+    <section class="wrapper">
+        <button mat-button (click)="onClickChangeMode()">{{isEditMode()? 'Modo edit': 'Modo vista'}}</button>
+      <div #mapSection class="section_map"></div>
+    </section>
+  </div>
+
   <section class="section-table">
     <br>
     <mat-form-field>
@@ -78,25 +98,5 @@
       </tr>
     </table>
   </section>
-  <br>
-  <br>
-  <div class="container">
-    <section class="section-list">
-      <mat-accordion>
-        @for (route of routesSignal(); track $index) {
-        <mat-expansion-panel (opened)="openMap(route)">
-          <mat-expansion-panel-header>
-            <mat-panel-title> {{ route.name }} </mat-panel-title>
-          </mat-expansion-panel-header>
-          <p>Código: {{ route.slug}}</p>
-          <p>Area: {{ route.area.name }}</p>
-        </mat-expansion-panel>
-        }
-      </mat-accordion>
-    </section>
-    <section class="wrapper">
-        <button mat-button (click)="onClickChangeMode()">{{isEditMode()? 'Modo edit': 'Modo vista'}}</button>
-      <div #mapSection class="section_map"></div>
-    </section>
-  </div>
+
 </main>
