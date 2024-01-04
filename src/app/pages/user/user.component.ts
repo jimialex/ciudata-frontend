@@ -8,6 +8,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { UserMountComponent } from './user-mount/user-mount.component';
+import { AddRouteModalComponent } from './add-route-modal/add-route-modal.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { UserService } from '../../services';
 import { User } from '../../interfaces';
@@ -59,6 +60,15 @@ export class UserComponent implements OnInit {
 
     const dialogRef = this.dialog.open(UserMountComponent, matDialogConfig);
     dialogRef.afterClosed().subscribe((result) => console.log(result));
+  }
+
+  onOpenDialogAddRoute() {
+    const matDialogConfig = new MatDialogConfig();
+    matDialogConfig.data = { type: 'new' };
+    matDialogConfig.width = '500px';
+
+    const dialogRef = this.dialog.open(AddRouteModalComponent, matDialogConfig);
+    dialogRef.afterClosed().subscribe((result) => console.log("result: ", result));
   }
 
   applyFilter(event: Event) {

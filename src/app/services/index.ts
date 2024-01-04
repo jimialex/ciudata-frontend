@@ -6,3 +6,4 @@ export * from './jwt.service';
 export * from './route.service';
 export * from './user.service';
 export * from './vehicle.service';
+export * from './assigned-route.service';

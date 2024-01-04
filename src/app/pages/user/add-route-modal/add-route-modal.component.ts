@@ -1,11 +1,12 @@
-import { Component, Inject, OnInit, Signal, computed, inject } from '@angular/core';
+import { Component, Inject, OnInit, Signal, computed, inject, ViewChild } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { VehicleService } from '../../../services';
+import { AssignedRouteService } from '../../../services';
+import { CdkTextareaAutosize, TextFieldModule } from '@angular/cdk/text-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -18,10 +19,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Vehicle } from '../../../interfaces';
+import { AssignedRoute } from '../../../interfaces';
 
 @Component({
-  selector: 'app-vechicle-modal',
+  selector: 'app-user-add-route',
   standalone: true,
   imports: [
     MatDialogModule,
@@ -32,26 +33,29 @@ import { Vehicle } from '../../../interfaces';
     ReactiveFormsModule,
     MatSelectModule,
     MatIconModule,
+    TextFieldModule,
   ],
-  templateUrl: './vehicle-modal.component.html',
-  styleUrl: './vehicle-modal.component.scss',
+  templateUrl: './add-route-modal.component.html',
+  styleUrl: './add-route-modal.component.scss',
 })
-export class VehicleModalComponent implements OnInit {
-  vehicleService = inject(VehicleService);
+export class AddRouteModalComponent implements OnInit {
+  assignedRouteService = inject(AssignedRouteService);
+  route: Signal<AssignedRoute[]> = computed(() => this.assignedRouteService.assignedRouteSignal());
   hide = true;
-  vehicleForm = new FormGroup({
-    plate: new FormControl('', Validators.required),
-    brand: new FormControl('', Validators.required),
-    model: new FormControl(''),
-    detail: new FormControl(''),
+
+  assignedRouteForm = new FormGroup({
+    user: new FormControl('', Validators.required),
+    route: new FormControl('', Validators.required),
+    assigned_detail: new FormControl(''),
   });
 
   title!: string;
   constructor(
-    public dialogRef: MatDialogRef<VehicleModalComponent>,
+    public dialogRef: MatDialogRef<AddRouteModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.title = this.data.type == 'new' ? 'Nuevo usuario' : 'Editar usuario';
+    this.title = this.data.type == 'new' ? 'Asignar ruta' : 'Editar asignacion';
+    this.assignedRouteService.getAssignedRoutes().subscribe();
 
   }
   ngOnInit(): void { }
@@ -60,8 +64,8 @@ export class VehicleModalComponent implements OnInit {
   }
 
   onSave() {
-    if (this.vehicleForm.valid) {
-      this.vehicleService.postVehicle(this.vehicleForm.value as Vehicle).subscribe({
+    if (this.assignedRouteForm.valid) {
+      this.assignedRouteService.postAssignedRoute(this.assignedRouteForm.value as AssignedRoute).subscribe({
         next: (data) => {
           console.log(data); this.dialogRef.close();
           // TODO: despues de esto se debe actualizar la lista de usuarios
