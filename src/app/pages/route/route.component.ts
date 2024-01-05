@@ -38,6 +38,8 @@ export class RouteComponent implements AfterViewInit {
 
   isEditMode = this.drawMapService.isEditableMode;
 
+  coordsSaved = this.drawMapService.coordsSaved;
+
   @ViewChild('mapSection') mapSection!: ElementRef;
   @ViewChild(MatAccordion) accordionSection!: MatAccordion;
 
