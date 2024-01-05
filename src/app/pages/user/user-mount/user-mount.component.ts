@@ -1,10 +1,9 @@
-import { Component, Inject, OnInit, Signal, computed, inject } from '@angular/core';
+import { Component, Inject, Signal, computed, inject } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
 import { UserService, GroupService } from '../../../services';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -36,7 +35,7 @@ import { User, Group } from '../../../interfaces';
   templateUrl: './user-mount.component.html',
   styleUrl: './user-mount.component.scss',
 })
-export class UserMountComponent implements OnInit {
+export class UserMountComponent {
   userService = inject(UserService);
   groupService = inject(GroupService);
   groups: Signal<Group[]> = computed(() => this.groupService.groups());
@@ -74,7 +73,6 @@ export class UserMountComponent implements OnInit {
     }
 
   }
-  ngOnInit(): void { }
   onCancel() {
     this.dialogRef.close();
   }

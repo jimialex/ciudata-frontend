@@ -12,6 +12,6 @@ export interface Area {
   id: number;
   slug: string;
   name: string;
-  geofence: LngLatLike;
+  geofence: LngLatLike | null;
 }
 
