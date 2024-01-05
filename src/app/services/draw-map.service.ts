@@ -170,6 +170,10 @@ export class DrawMapService {
         this.coordsSaved.set(coords);
         this.getMatch(coords);
       });
+      this.map.on('draw.delete', (event) => {
+        this.remove();
+        this.coordsSaved.set([]);
+      });
     } else {
       this.map.removeControl(this.draw);
     }
@@ -196,7 +200,7 @@ export class DrawMapService {
       `&access_token=${enviroment.mapBoxKey}`,
     ].join('');
     this.httpClient.get(url).subscribe((response: any) => {
-      this.addRoute(response.matchings[0].geometry)
+      this.addRoute(response.matchings[0].geometry);
     });
   }
 
@@ -205,7 +209,7 @@ export class DrawMapService {
       this.map.removeLayer('route');
       this.map.removeSource('route');
     }
-    
+
     this.map.addLayer({
       id: 'route',
       type: 'line',
@@ -214,18 +218,18 @@ export class DrawMapService {
         data: {
           type: 'Feature',
           properties: {},
-          geometry: coords as any
-        }
+          geometry: coords as any,
+        },
       },
       layout: {
         'line-join': 'round',
-        'line-cap': 'round'
+        'line-cap': 'round',
       },
       paint: {
         'line-color': '#03AA46',
         'line-width': 8,
-        'line-opacity': 0.8
-      }
+        'line-opacity': 0.8,
+      },
     });
   }
 }
