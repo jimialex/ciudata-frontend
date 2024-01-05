@@ -23,7 +23,7 @@ export class GroupService {
       })
       .pipe(
         map((response: any) => {
-          console.log("Grupos Service: ", response.results);
+          //console.log("Grupos Service: ", response.results);
           this.groups.set(response.results);
           return response.results;
         })

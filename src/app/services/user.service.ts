@@ -51,4 +51,20 @@ export class UserService {
         })
       );
   }
+
+  putUser(user: Partial<User>, username: any) {
+    let url = `${this.config.getApiUrl()}/users/` + username + `/`;
+    return this.http.put(url, { ...user },
+      {
+        headers: {
+          Authorization: `Bearer ${this.jwtService.getAccessToken()}`,
+        },
+      }
+    )
+      .pipe(
+        tap(() => {
+          this.users.update((state: any) => [...state, user]);
+        })
+      );
+  }
 }

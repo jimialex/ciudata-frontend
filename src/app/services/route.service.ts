@@ -14,9 +14,25 @@ export class RouteService {
 
   public routesSignals: WritableSignal<Route[]> = signal([]);
 
-  getRoutes() {
+  getRoutes(queryParams: { [key: string]: any } = {}) {
     return this.http
       .get(`${this.configService.getApiUrl()}/routes/`, {
+        headers: {
+          Authorization: `Bearer ${this.jwtService.getAccessToken()}`,
+        },
+        params: queryParams, // Agrega la propiedad params
+      })
+      .pipe(
+        map((response: any) => {
+          this.routesSignals.set(response.results);
+          return response.results;
+        })
+      );
+  }
+
+  getRoutesUnassigned() {
+    return this.http
+      .get(`${this.configService.getApiUrl()}/routes/unassigned/`, {
         headers: {
           Authorization: `Bearer ${this.jwtService.getAccessToken()}`,
         },
@@ -28,4 +44,5 @@ export class RouteService {
         })
       );
   }
+
 }

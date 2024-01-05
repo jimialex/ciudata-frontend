@@ -8,10 +8,22 @@
           <input matInput formControlName="user" />
         </mat-form-field>
       </mat-grid-tile>
-      <mat-grid-tile>
+      <!--mat-grid-tile>
         <mat-form-field>
           <mat-label>Ruta</mat-label>
           <input matInput formControlName="route" />
+        </mat-form-field>
+      </mat-grid-tile-->
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Ruta</mat-label>
+          <mat-select matInput formControlName="route">
+            @for(route of routes(); track route.id) {
+            <mat-option value="{{route.id}}">{{route.name}}</mat-option>
+            }
+            <!--mat-option value="1">Administrador</mat-option-->
+            <!--mat-option value="2">Conductor</mat-option-->
+          </mat-select>
         </mat-form-field>
       </mat-grid-tile>
       <!--mat-grid-tile>

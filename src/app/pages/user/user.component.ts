@@ -10,6 +10,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { UserMountComponent } from './user-mount/user-mount.component';
 import { AddRouteModalComponent } from './add-route-modal/add-route-modal.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatListModule } from '@angular/material/list';
 import { UserService } from '../../services';
 import { User } from '../../interfaces';
 
@@ -24,7 +25,8 @@ import { User } from '../../interfaces';
     MatInputModule,
     MatTableModule,
     MatTooltipModule,
-    MatTabsModule
+    MatTabsModule,
+    MatListModule
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
@@ -36,8 +38,8 @@ export class UserComponent implements OnInit {
     'id',
     'first_name',
     'last_name',
-    'username',
     'email',
+    'assigned_route',
     'actions',
   ];
   dataSource: MatTableDataSource<User>;
@@ -59,16 +61,34 @@ export class UserComponent implements OnInit {
     matDialogConfig.width = '500px';
 
     const dialogRef = this.dialog.open(UserMountComponent, matDialogConfig);
-    dialogRef.afterClosed().subscribe((result) => console.log(result));
+    dialogRef.afterClosed().subscribe((result) => {
+      //console.log(result);
+      this.ngOnInit();
+    });
   }
 
-  onOpenDialogAddRoute() {
+  onOpenDialogEdit(user: any) {
     const matDialogConfig = new MatDialogConfig();
-    matDialogConfig.data = { type: 'new' };
+    matDialogConfig.data = { type: 'edit', user };
+    matDialogConfig.width = '500px';
+
+    const dialogRef = this.dialog.open(UserMountComponent, matDialogConfig);
+    dialogRef.afterClosed().subscribe((result) => {
+      //console.log(result);
+      this.ngOnInit();
+    });
+  }
+
+  onOpenDialogAddRoute(user: any) {
+    const matDialogConfig = new MatDialogConfig();
+    matDialogConfig.data = { type: 'new', user };
     matDialogConfig.width = '500px';
 
     const dialogRef = this.dialog.open(AddRouteModalComponent, matDialogConfig);
-    dialogRef.afterClosed().subscribe((result) => console.log("result: ", result));
+    dialogRef.afterClosed().subscribe((result) => {
+      //console.log("result: ", result);
+      this.ngOnInit();
+    });
   }
 
   applyFilter(event: Event) {

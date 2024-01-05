@@ -41,6 +41,7 @@ export class UserMountComponent implements OnInit {
   groupService = inject(GroupService);
   groups: Signal<Group[]> = computed(() => this.groupService.groups());
   hide = true;
+  userData: any;
   userForm = new FormGroup({
     username: new FormControl('', Validators.required),
     email: new FormControl('', Validators.required),
@@ -50,6 +51,8 @@ export class UserMountComponent implements OnInit {
     groups: new FormControl('', Validators.required),
   });
 
+
+
   title!: string;
   constructor(
     public dialogRef: MatDialogRef<UserMountComponent>,
@@ -57,6 +60,18 @@ export class UserMountComponent implements OnInit {
   ) {
     this.title = this.data.type == 'new' ? 'Nuevo usuario' : 'Editar usuario';
     this.groupService.getGroups().subscribe();
+    this.userData = this.data.user;
+
+    if (this.data.type != 'new') {
+      this.userForm = new FormGroup({
+        username: new FormControl(this.userData.username, Validators.required),
+        email: new FormControl(this.userData.email, Validators.required),
+        first_name: new FormControl(this.userData.first_name),
+        last_name: new FormControl(this.userData.last_name),
+        password: new FormControl(''),
+        groups: new FormControl(this.userData.groups[0].id, Validators.required),
+      });
+    }
 
   }
   ngOnInit(): void { }
@@ -65,14 +80,27 @@ export class UserMountComponent implements OnInit {
   }
 
   onSave() {
-    if (this.userForm.valid) {
-      this.userService.postUser(this.userForm.value as User).subscribe({
-        next: (data) => {
-          console.log(data); this.dialogRef.close();
-          // TODO: despues de esto se debe actualizar la lista de usuarios
-        },
-        error: (error) => console.log(error),
-      });
+    if (this.data.type == 'new') {  // for  create new user
+      if (this.userForm.valid) {
+        this.userService.postUser(this.userForm.value as User).subscribe({
+          next: (data) => {
+            console.log(data); this.dialogRef.close();
+            // TODO: despues de esto se debe actualizar la lista de usuarios
+          },
+          error: (error) => console.log(error),
+        });
+      }
+    }
+    else {
+      if (this.userForm.valid) {  // for edit user exists
+        this.userService.putUser(this.userForm.value as User, this.userData.username).subscribe({
+          next: (data) => {
+            console.log("RESPONSE", data); this.dialogRef.close();
+            // TODO: despues de esto se debe actualizar la lista de usuarios
+          },
+          error: (error) => console.log(error),
+        });
+      }
     }
   }
 }

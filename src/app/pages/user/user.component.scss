@@ -44,3 +44,16 @@ main {
 .mat-sidenav-content {
   transform: none !important;
 }
+
+.mat-mdc-list-item-title {
+  font-size: 12px !important;
+}
+
+.mat-mdc-list-item-line {
+  font-size: 10px !important;
+}
+
+.mat-mdc-list-item {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
