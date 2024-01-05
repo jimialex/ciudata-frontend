@@ -1,10 +1,9 @@
-import { Component, Inject, OnInit, Signal, computed, inject } from '@angular/core';
+import { Component, Inject, Signal, computed, inject } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
 import { UserService, GroupService } from '../../../services';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -36,7 +35,7 @@ import { User, Group } from '../../../interfaces';
   templateUrl: './user-mount.component.html',
   styleUrl: './user-mount.component.scss',
 })
-export class UserMountComponent implements OnInit {
+export class UserMountComponent {
   userService = inject(UserService);
   groupService = inject(GroupService);
   groups: Signal<Group[]> = computed(() => this.groupService.groups());
@@ -57,9 +56,7 @@ export class UserMountComponent implements OnInit {
   ) {
     this.title = this.data.type == 'new' ? 'Nuevo usuario' : 'Editar usuario';
     this.groupService.getGroups().subscribe();
-
   }
-  ngOnInit(): void { }
   onCancel() {
     this.dialogRef.close();
   }
@@ -68,7 +65,8 @@ export class UserMountComponent implements OnInit {
     if (this.userForm.valid) {
       this.userService.postUser(this.userForm.value as User).subscribe({
         next: (data) => {
-          console.log(data); this.dialogRef.close();
+          console.log(data);
+          this.dialogRef.close();
           // TODO: despues de esto se debe actualizar la lista de usuarios
         },
         error: (error) => console.log(error),

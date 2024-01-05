@@ -1,0 +1,19 @@
+<form (submit)="onSave()" [formGroup]="RouteModalForm">
+    <h3 mat-dialog-title>Guardar Ruta</h3>
+    <mat-dialog-content class="content">
+        <mat-form-field>
+            <mat-label>nombre de la ruta</mat-label>
+            <input matInput formControlName="name">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Area</mat-label>
+            <input matInput formControlName="area">
+        </mat-form-field>
+
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-stroked-button color="primary" type="submit">Aceptar</button>
+        <button mat-stroked-button (click)="onCancel()">Cancelar</button>
+    </mat-dialog-actions>
+</form>

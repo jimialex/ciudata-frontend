@@ -14,6 +14,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Route } from '../../interfaces/route';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { RouteModalComponent } from './route-modal/route-modal.component';
 
 @Component({
   selector: 'app-route',
@@ -45,7 +47,7 @@ export class RouteComponent implements AfterViewInit {
 
   public routesSignal = this.routeService.routesSignals;
 
-  constructor() {
+  constructor(public dialog: MatDialog) {
     this.routeService
       .getRoutes()
       .subscribe((response) => (this.dataSource.data = response));
@@ -74,5 +76,14 @@ export class RouteComponent implements AfterViewInit {
       this.accordionSection.closeAll();
     }
     this.drawMapService.changeMode();
+  }
+
+  onOpenDialog() {
+    const matDialogConfig = new MatDialogConfig();
+    // matDialogConfig.data = { };
+    matDialogConfig.width = '500px';
+
+    const dialogRef = this.dialog.open(RouteModalComponent, matDialogConfig);
+    dialogRef.afterClosed().subscribe((result: any) => console.log(result));
   }
 }

@@ -28,4 +28,8 @@ export class RouteService {
         })
       );
   }
+
+  addRouteSignals(route: Route) {
+    this.routesSignals.update(value => [...value, route]);
+  }
 }

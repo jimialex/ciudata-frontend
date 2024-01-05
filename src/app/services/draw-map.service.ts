@@ -1,8 +1,19 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, WritableSignal, inject, signal } from '@angular/core';
+import {
+  Inject,
+  Injectable,
+  WritableSignal,
+  inject,
+  signal,
+} from '@angular/core';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import { LngLatLike, Map, Marker, Popup } from 'mapbox-gl';
+import { ConfigService } from './config.service';
 import { enviroment } from '../../assets/config/config';
+import { JwtService } from './jwt.service';
+import { Geometry } from 'geojson';
+import { map, of, tap } from 'rxjs';
+import { RouteService } from './route.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +22,7 @@ export class DrawMapService {
   map!: Map;
   isEditableMode: WritableSignal<boolean> = signal(false);
   coordsSaved: WritableSignal<LngLatLike[]> = signal([]);
+  distanceSaved: WritableSignal<number> = signal(0);
 
   draw: MapboxDraw;
 
@@ -21,6 +33,9 @@ export class DrawMapService {
   popupFin?: Popup;
 
   httpClient = inject(HttpClient);
+  configService = inject(ConfigService);
+  jwtService = inject(JwtService);
+  routeService = inject(RouteService);
 
   constructor() {
     this.draw = new MapboxDraw({
@@ -28,6 +43,7 @@ export class DrawMapService {
       displayControlsDefault: false,
       controls: {
         line_string: true,
+
         trash: true,
       },
       // Set the draw mode to draw LineStrings by default.
@@ -167,7 +183,6 @@ export class DrawMapService {
       this.map.on('draw.create', (event) => {
         const coords: LngLatLike[] = event.features[0].geometry
           .coordinates as LngLatLike[];
-        this.coordsSaved.set(coords);
         this.getMatch(coords);
       });
       this.map.on('draw.delete', (event) => {
@@ -200,11 +215,18 @@ export class DrawMapService {
       `&access_token=${enviroment.mapBoxKey}`,
     ].join('');
     this.httpClient.get(url).subscribe((response: any) => {
-      this.addRoute(response.matchings[0].geometry);
+      const geometry = response.matchings[0].geometry;
+      this.coordsSaved.set(
+        geometry.coordinates.map((d: any) => {
+          return { lng: d[0], lat: d[1] };
+        })
+      );
+      this.addRoute(geometry);
+      this.distanceSaved.set(response.matchings[0].distance);
     });
   }
 
-  addRoute(coords: LngLatLike[]) {
+  addRoute(geometry: Geometry) {
     if (this.map.getSource('route')) {
       this.map.removeLayer('route');
       this.map.removeSource('route');
@@ -218,7 +240,7 @@ export class DrawMapService {
         data: {
           type: 'Feature',
           properties: {},
-          geometry: coords as any,
+          geometry: geometry,
         },
       },
       layout: {
@@ -232,6 +254,39 @@ export class DrawMapService {
       },
     });
   }
-}
 
-// 9:45 13 calacoto 8395
+  saveNewRoute(name: string, area: number) {
+    const url = `${this.configService.getApiUrl()}/routes/`;
+    return this.httpClient
+      .post(
+        url,
+        {
+          name,
+          area,
+          metadata: { distance: this.distanceSaved() },
+          geo_route: this.coordsSaved(),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.jwtService.getAccessToken()}`,
+          },
+        }
+      )
+      .pipe(
+        tap((response: any) => {
+          return this.routeService.addRouteSignals({
+            id: response.id,
+            name: response.name,
+            slug: response.slug,
+            area: {
+              id: 1,
+              name: 'Area 1',
+              slug: '',
+              geofence: null,
+            },
+            geo_route: response.geo_route,
+          });
+        })
+      );
+  }
+}

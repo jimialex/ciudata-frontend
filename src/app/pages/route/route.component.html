@@ -1,7 +1,7 @@
 <main>
   <section>
     @if (this.coordsSaved().length > 0) {
-    <button mat-fab class="fab" color="primary">
+    <button mat-fab class="fab" color="primary" (click)="onOpenDialog()">
       <mat-icon>add</mat-icon>
     </button>
     }
