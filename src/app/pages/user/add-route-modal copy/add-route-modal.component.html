@@ -1,0 +1,50 @@
+<form [formGroup]="assignedRouteForm" (submit)="onSave()">
+  <h3 mat-dialog-title>{{ title }}</h3>
+  <mat-dialog-content class="content">
+    <mat-grid-list cols="2" rowHeight="2:1">
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Usuario</mat-label>
+          <input matInput formControlName="user" />
+        </mat-form-field>
+      </mat-grid-tile>
+      <!--mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Ruta</mat-label>
+          <input matInput formControlName="route" />
+        </mat-form-field>
+      </mat-grid-tile-->
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Ruta</mat-label>
+          <mat-select matInput formControlName="route">
+            @for(route of routes(); track route.id) {
+            <mat-option value="{{route.id}}">{{route.name}}</mat-option>
+            }
+            <!--mat-option value="1">Administrador</mat-option-->
+            <!--mat-option value="2">Conductor</mat-option-->
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <!--mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Detalle</mat-label>
+          <input matInput formControlName="assigned_detail" />
+        </mat-form-field>
+      </mat-grid-tile-->
+
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Detalle</mat-label>
+          <textarea matInput cdkTextareaAutosize formControlName="assigned_detail" #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"></textarea>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-stroked-button color="primary" type="submit">Aceptar</button>
+    <button mat-button mat-stroked-button (click)="onCancel()">Cancelar</button>
+  </mat-dialog-actions>
+</form>
